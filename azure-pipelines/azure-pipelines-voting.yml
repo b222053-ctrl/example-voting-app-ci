@@ -1,0 +1,54 @@
+# Azure Pipeline for Voting Service
+# This pipeline builds and pushes the voting (Python) service to Azure Container Registry
+
+# Trigger: Run pipeline when changes are made to the voting service
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+  paths:
+    include:
+      - voting/**
+
+# Pool Configuration
+# CHANGE THIS: If using Microsoft-hosted agents, replace with:
+# pool:
+#   vmImage: 'ubuntu-latest'
+pool:
+  name: AzureAgent  # Self-hosted agent pool name
+
+# Variables
+variables:
+  imageRepository: 'voting'
+  dockerfilePath: '$(Build.SourcesDirectory)/voting/Dockerfile'
+  buildContext: '$(Build.SourcesDirectory)/voting'
+  tag: '$(Build.BuildId)'
+
+stages:
+  - stage: Build
+    displayName: 'Build and Push Voting Image'
+    jobs:
+      - job: BuildAndPush
+        displayName: 'Build and Push Docker Image'
+        steps:
+          # Build and push Docker image to ACR
+          - task: Docker@2
+            displayName: 'Build and Push Voting Image'
+            inputs:
+              # CHANGE THIS: Replace <ACR_SERVICE_CONNECTION> with your Azure DevOps service connection name
+              # Example: containerRegistry: 'ACR-Connection'
+              containerRegistry: '<ACR_SERVICE_CONNECTION>'
+              repository: '$(imageRepository)'
+              command: 'buildAndPush'
+              Dockerfile: '$(dockerfilePath)'
+              buildContext: '$(buildContext)'
+              tags: |
+                $(tag)
+                latest
+
+          # Display image information
+          - script: |
+              echo "Image: $(imageRepository):$(tag)"
+              echo "Also tagged as: $(imageRepository):latest"
+            displayName: 'Display Image Info'

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  voting:
+    build:
+      context: ./voting
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+    networks:
+      - voting-network
+
+  results:
+    build:
+      context: ./results
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - voting-network
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - voting-network
+
+networks:
+  voting-network:
+    driver: bridge
