@@ -3,28 +3,10 @@
 A demo multi-language microservice application showcasing Azure DevOps CI/CD pipelines with Azure Container Registry.
 
 ## Architecture
+<img width="800" height="626" alt="Screenshot 2025-11-19 at 10 16 52 PM" src="https://github.com/user-attachments/assets/b0f0a8c3-8d00-4d83-9fea-0c99fe18af62" />
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Azure DevOps Pipelines                    │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐            │
-│  │  Voting    │  │  Results   │  │  Worker    │            │
-│  │  Pipeline  │  │  Pipeline  │  │  Pipeline  │            │
-│  └──────┬─────┘  └──────┬─────┘  └──────┬─────┘            │
-│         │                │                │                  │
-│         └────────────────┼────────────────┘                  │
-│                          ▼                                   │
-│              Azure Container Registry (ACR)                  │
-└─────────────────────────────────────────────────────────────┘
-                          │
-          ┌───────────────┼───────────────┐
-          ▼               ▼               ▼
-    ┌─────────┐     ┌─────────┐     ┌─────────┐
-    │ Voting  │     │ Results │     │ Worker  │
-    │ Python  │     │ Node.js │     │  .NET   │
-    │  :5000  │     │  :8080  │     │  :5001  │
-    └─────────┘     └─────────┘     └─────────┘
-```
+
+
 
 ## Services
 
